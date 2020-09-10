@@ -8,7 +8,7 @@ import java.util.Formatter;
  */
 public class IntList {
     /**
-     * First element of this IntList.
+     * First element of this IntList. Harrison Kuok
      */
     public int first;
     /**
@@ -80,12 +80,16 @@ public class IntList {
      */
 
     public static IntList dcatenate(IntList A, IntList B) {
-        IntList temp = A;
+        IntList result = A;
         while (A.rest != null) {
             A = A.rest;
         }
-        A.rest = B;
-        return temp;
+        if (result == null) {
+            A = B;
+        } else {
+            A.rest = B;
+        }
+        return result;
     }
 
     /**
