@@ -86,7 +86,7 @@ public class IntList {
         }
         IntList end = A;
         while (end.rest != null) {
-            end = A.rest;
+            end = end.rest;
         }
         end.rest = B;
         return A;
