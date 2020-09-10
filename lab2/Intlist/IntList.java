@@ -84,11 +84,11 @@ public class IntList {
             A = B;
             return A;
         }
-        IntList result = A;
-        while (A.rest != null) {
-            result = A.rest;
+        IntList end = A;
+        while (end.rest != null) {
+            end = A.rest;
         }
-        result.rest = B;
+        end.rest = B;
         return A;
     }
 
