@@ -1,10 +1,10 @@
 public class LinkedListDeque<T> {
     private class TNode {
-        public T item;
-        public TNode prev;
-        public TNode next;
+        private T item;
+        private TNode prev;
+        private TNode next;
 
-        public TNode(T x, TNode p, TNode n) {
+        TNode(T x, TNode p, TNode n) {
             item = x;
             prev = p;
             next = n;
@@ -31,15 +31,15 @@ public class LinkedListDeque<T> {
 
     public void addFirst(T item) {
         TNode temp = new TNode(item, sentinel, sentinel.next);
-            sentinel.next.prev = temp;
-            sentinel.next = temp;
+        sentinel.next.prev = temp;
+        sentinel.next = temp;
         size += 1;
     }
 
     public void addLast(T item) {
         TNode temp = new TNode(item, sentinel.prev, sentinel);
-            sentinel.prev.next = temp;
-            sentinel.prev = temp;
+        sentinel.prev.next = temp;
+        sentinel.prev = temp;
         size += 1;
     }
 
@@ -52,12 +52,13 @@ public class LinkedListDeque<T> {
     }
 
     public void printDeque() {
-         TNode temp = sentinel.next;
-         while (temp != sentinel) {
-             System.out.print(temp.item);
-             System.out.print(" ");
-         }
-         System.out.println();
+        TNode temp = sentinel.next;
+        while (temp != sentinel) {
+            System.out.print(temp.item);
+            System.out.print(" ");
+            temp = temp.next;
+        }
+        System.out.println();
     }
 
     public T removeFirst() {
