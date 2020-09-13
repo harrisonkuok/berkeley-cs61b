@@ -4,13 +4,16 @@ public class ArrayDequeTest {
 
         int x = 0;
 
-        test.addLast(1);
-        while (x != 128) {
+
+        while (x != 32) {
             test.addFirst(1);
             x += 1;
         }
 
-
+        while (x != 1) {
+            test.removeFirst();
+            x -= 1;
+        }
 
     }
 }

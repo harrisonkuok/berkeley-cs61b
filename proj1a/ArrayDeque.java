@@ -21,7 +21,9 @@ public class ArrayDeque<T> {
     }
 
     private void sizeCheck() {
-        if (items.length > 8 && (size / items.length) < 1 / 4) {
+        double occupied = size;
+        double capacity = items.length;
+        if (items.length > 8 && (occupied / capacity) < 0.25) {
             resize(items.length / 2);
         }
     }
