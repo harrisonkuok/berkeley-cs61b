@@ -14,7 +14,7 @@ public class ArrayDeque<T> {
     private void resize(int capacity) {
         T[] temp = (T[]) new Object[capacity];
         int originalStart = nextFirst + 1;
-        nextFirst = capacity / 4 - 1;
+        nextFirst = (capacity - size) / 2;
         nextLast = nextFirst + size + 1;
         System.arraycopy(items, originalStart, temp, nextFirst + 1, size);
         items = temp;
