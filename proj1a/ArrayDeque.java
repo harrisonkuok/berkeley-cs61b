@@ -28,7 +28,7 @@ public class ArrayDeque<T> {
 
     public void addFirst(T item) {
         if (nextFirst == 0) {
-            resize(size * 2);
+            resize(items.length * 2);
         }
 
         items[nextFirst] = item;
@@ -37,8 +37,8 @@ public class ArrayDeque<T> {
     }
 
     public void addLast(T item) {
-        if (nextLast == items.length - 1) {
-            resize(size * 2);
+        if (nextLast == (items.length - 1)) {
+            resize(items.length * 2);
         }
 
         items[nextLast] = item;
@@ -56,7 +56,7 @@ public class ArrayDeque<T> {
 
     public void printDeque() {
         int index = nextFirst + 1;
-        while (index <= nextFirst + size - 1) {
+        while (index <= nextFirst + size) {
             System.out.print(items[index]);
             System.out.print(" ");
             index += 1;

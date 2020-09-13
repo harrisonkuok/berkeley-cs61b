@@ -21,14 +21,6 @@ public class LinkedListDeque<T> {
         size = 0;
     }
 
-    public LinkedListDeque(T x) {
-        sentinel = new TNode(null, null, null);
-        sentinel.next = new TNode(x, sentinel, null);
-        sentinel.prev = sentinel.next;
-        sentinel.next.next = sentinel;
-        size = 1;
-    }
-
     public void addFirst(T item) {
         TNode temp = new TNode(item, sentinel, sentinel.next);
         sentinel.next.prev = temp;
