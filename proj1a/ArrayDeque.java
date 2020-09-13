@@ -21,7 +21,7 @@ public class ArrayDeque<T> {
     }
 
     private void sizeCheck() {
-        if (items.length > 8 && (size / items.length) < 0.25) {
+        if (items.length > 8 && (size / items.length) < 1 / 4) {
             resize(items.length / 2);
         }
     }
@@ -65,22 +65,25 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
-        if (size == 0) {
+        T temp = get(0);
+        if (temp == null) {
             return null;
         }
-        T temp = get(0);
-        System.arraycopy(items, 1, items, 0, size - 1);
+        items[nextFirst + 1] = null;
+        nextFirst += 1;
         size -= 1;
         sizeCheck();
         return temp;
     }
 
     public T removeLast() {
-        if (size == 0) {
+        T temp = get(size - 1);
+        if (temp == null) {
             return null;
         }
-        T temp = get(size - 1);
-        size = size - 1;
+        items[nextLast - 1] = null;
+        nextLast -= 1;
+        size -= 1;
         sizeCheck();
         return temp;
     }
@@ -89,7 +92,7 @@ public class ArrayDeque<T> {
         if (index > size - 1) {
             return null;
         }
-        return items[index];
+        return items[nextFirst + index + 1];
     }
 
 }
