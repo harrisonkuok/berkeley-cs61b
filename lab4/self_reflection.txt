@@ -4,23 +4,23 @@ ArrayDeque:
 
 Q: Give an example of at least one idea from the staff solution that would have made your solution better (if any).
 
-A: 
+A: The WrapIndex Method, it gets easier when dealing with the indices in the list.
 
 Q: What's something you felt proud of in your code, if anything?
 
-A:
+A: The way I write the resize method.
 
 Q: What's something that was particularly inelegant in your code, if anything?
 
-A:
+A: The way I get the real index in the array.
 
 Q: What did you learn by talking to your partner about writing ArrayDeque?
 
-A:
+A: 
 
 Q: What do you wish you would have known before writing ArrayDeque, if anything?
 
-A:
+A: The WrapIndex, it really made the reference to the array object so much easier.
 
 Q: If you wrote ArrayDeque again, what would you do differently, if anything?
 
@@ -60,4 +60,4 @@ Meta:
 
 Q: Did you like this design review process? Anything we should do differently next time?
 
-A: 
+A: I really like the review process. It gives me new insight when coding.
