@@ -34,8 +34,8 @@ public class TestPalindrome {
 
     @Test
     public void testIsPalindrome2() {
-        assertTrue(palindrome.isPalindrome("racecas", offByOne));
-        assertTrue(palindrome.isPalindrome("noom", offByOne));
+        assertTrue(palindrome.isPalindrome("detrude", offByOne));
+        assertTrue(palindrome.isPalindrome("nopm", offByOne));
         assertTrue(palindrome.isPalindrome("", offByOne));
         assertTrue(palindrome.isPalindrome("a", offByOne));
 
