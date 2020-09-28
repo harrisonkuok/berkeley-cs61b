@@ -31,7 +31,7 @@ public class GuitarString {
         double r;
         for (int index = 0; index < buffer.capacity(); index += 1) {
             buffer.dequeue();
-            r = Math.random() - 0.5;
+            r = StdRandom.uniform(-0.5, 0.5);
             buffer.enqueue(r);
         }
     }

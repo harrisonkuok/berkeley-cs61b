@@ -105,9 +105,9 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
      */
     @Override
     public T peek() {
-        // TODO: Return the first item. None of your instance variables should
-        //       change. Don't worry about throwing the RuntimeException until you
-        //       get to task 4.
+        if (fillCount() == 0) {
+            throw new RuntimeException("Ring Buffer underflow");
+        }
         return rb[first];
     }
 
@@ -134,8 +134,5 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
         }
         return true;
     }
-
-    // TODO: When you get to part 4, implement the needed code to support
-    //       iteration and equals.
 }
-    // TODO: Remove all comments that say TODO when you're done.
+
