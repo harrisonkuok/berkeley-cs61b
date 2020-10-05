@@ -49,7 +49,7 @@ public class Percolation {
         if (isOpen(row, col)) {
             return;
         }
-        
+
         int boxNum = xyTo1D(row, col);
         grid[row][col] = true;
         numOfOpenSites += 1;
