@@ -6,31 +6,32 @@ import edu.princeton.cs.introcs.StdStats;
 public class PercolationStats {
 
     private int times;
-    private int[] percolatesTimes;
+    private double[] percolatesTimes;
 
     public PercolationStats(int N, int T, PercolationFactory pf) {
-       if (N <= 0 || T <= 0) {
-           throw new java.lang.IllegalArgumentException();
-       }
+        if (N <= 0 || T <= 0) {
+            throw new java.lang.IllegalArgumentException();
+        }
 
-       times = T;
-       percolatesTimes = new int[T];
+        times = T;
+        percolatesTimes = new double[T];
 
-       Percolation grid;
-       int percolatesTime;
-       int randRow;
-       int randCol;
+        Percolation grid;
+        double percolatesTime;
+        int randRow;
+        int randCol;
 
-       for (int i = 0; i < T; i += 1) {
-           grid = pf.make(N);
-           percolatesTime = 0;
-           for (int j = 0; !grid.percolates(); j += 1, percolatesTime += 1) {
-               randRow = StdRandom.uniform(N);
-               randCol = StdRandom.uniform(N);
-               grid.open(randRow, randCol);
-           }
-           percolatesTimes[i] = percolatesTime;
-       }
+        for (int i = 0; i < T; i += 1) {
+            grid = pf.make(N);
+            percolatesTime = 0;
+            for (int j = 0; !grid.percolates(); j += 1) {
+                randRow = StdRandom.uniform(N);
+                randCol = StdRandom.uniform(N);
+                grid.open(randRow, randCol);
+            }
+            percolatesTime = grid.numberOfOpenSites() / (double) (N * N);
+            percolatesTimes[i] = percolatesTime;
+        }
     }
 
     public double mean() {
