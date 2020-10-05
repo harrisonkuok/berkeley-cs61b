@@ -12,6 +12,9 @@ public class Percolation {
     private WeightedQuickUnionUF connectionsAfterP;
 
     public Percolation(int N) {
+        if (N <= 0) {
+            throw new java.lang.IllegalArgumentException();
+        }
         percolate = false;
         numOfOpenSites = 0;
         length = N;
@@ -20,7 +23,7 @@ public class Percolation {
         connectionsAfterP = new WeightedQuickUnionUF(N * N + 1);
 
         for (int i = 0; i < N; i += 1) {
-            for (int j = 0; j < N; j+= 1) {
+            for (int j = 0; j < N; j += 1) {
                 grid[i][j] = false;
             }
         }
@@ -35,10 +38,18 @@ public class Percolation {
         return length * row + col;
     }
 
+    private void checkIndex(int row, int col) {
+        if (row >= length || col >= length || row < 0 || col < 0) {
+            throw new java.lang.IndexOutOfBoundsException();
+        }
+    }
+
     public void open(int row, int col) {
+        checkIndex(row, col);
         if (isOpen(row, col)) {
             return;
         }
+        
         int boxNum = xyTo1D(row, col);
         grid[row][col] = true;
         numOfOpenSites += 1;
@@ -70,17 +81,22 @@ public class Percolation {
     }
 
     public boolean isOpen(int row, int col) {
+        checkIndex(row, col);
         return grid[row][col];
     }
 
     public boolean isFull(int row, int col) {
+        checkIndex(row, col);
+        if (row >= length || col >= length) {
+            throw new java.lang.IndexOutOfBoundsException();
+        }
         if (row > 0 && row < length - 1) {
-            if (!percolate) {
+            if (!percolates()) {
                 return connections.connected(xyTo1D(row, col), length * length);
             }
             return connectionsAfterP.connected(xyTo1D(row, col), length * length);
         }
-        if (!percolate) {
+        if (!percolates()) {
             return isOpen(row, col) && connections.connected(xyTo1D(row, col), length * length);
         }
         return isOpen(row, col) && connectionsAfterP.connected(xyTo1D(row, col), length * length);
