@@ -4,12 +4,12 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
 
-    boolean percolate;
-    int numOfOpenSites;
-    int length;
-    boolean[][] grid;
-    WeightedQuickUnionUF connections;
-    WeightedQuickUnionUF connectionsAfterP;
+    private boolean percolate;
+    private int numOfOpenSites;
+    private int length;
+    private boolean[][] grid;
+    private WeightedQuickUnionUF connections;
+    private WeightedQuickUnionUF connectionsAfterP;
 
     public Percolation(int N) {
         percolate = false;
@@ -91,6 +91,9 @@ public class Percolation {
     }
 
     public boolean percolates() {
+        if (length == 1) {
+            return isOpen(0, 0);
+        }
         if (!percolate) {
             percolate = connections.connected(length * length, length * length + 1);
         }
