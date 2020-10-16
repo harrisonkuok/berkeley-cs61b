@@ -4,11 +4,11 @@ import java.util.Set;
 
 public class MyHashMap<K, V> implements Map61B<K, V> {
 
-    Entry<K, V>[] buckets;
-    int initialSize;
-    int load;
-    double loadFactor;
-    int size;
+    private Entry<K, V>[] buckets;
+    private int initialSize;
+    private int load;
+    private double loadFactor;
+    private int size;
 
     public MyHashMap() {
         this.initialSize = 16;
