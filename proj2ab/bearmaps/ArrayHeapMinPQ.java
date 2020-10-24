@@ -79,7 +79,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
             priority = p;
         }
 
-        public T getItem(){
+        public T getItem() {
             return item;
         }
 
