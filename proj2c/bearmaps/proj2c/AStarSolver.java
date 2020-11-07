@@ -32,6 +32,7 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
         List<WeightedEdge<Vertex>> neighborEdges;
 
         distTo.put(start, 0.0);
+        edgeTo.put(start, null);
         fringe.add(start, 0);
 
         while (fringe.size() > 0 && !fringe.getSmallest().equals(end)) {
@@ -40,15 +41,25 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
             for (WeightedEdge<Vertex> e : neighborEdges) {
                 relax(e, input, end);
             }
-            solution.add(p);
             explored += 1;
+            if (sw.elapsedTime() > timeout) {
+                timeSpent = sw.elapsedTime();
+                outcome = SolverOutcome.TIMEOUT;
+                return;
+            }
         }
+
         if (fringe.size() == 0) {
             outcome = SolverOutcome.UNSOLVABLE;
-            solution.clear();
+            timeSpent = sw.elapsedTime();
             return;
         }
-        solution.add(fringe.removeSmallest());
+
+        for (Vertex v = end; v != null; v = edgeTo.get(v)) {
+            solution.add(v);
+        }
+        reverseSolution();
+
         explored += 1;
         solutionWeight = distTo.get(end);
         outcome = SolverOutcome.SOLVED;
@@ -77,7 +88,7 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
 
     @Override
     public double explorationTime() {
-        return 0;
+        return timeSpent;
     }
 
     private void relax(WeightedEdge<Vertex> e, AStarGraph<Vertex> input, Vertex end) {
@@ -93,5 +104,13 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
                 fringe.add(q, distTo.get(q) + input.estimatedDistanceToGoal(q, end));
             }
         }
+    }
+
+    private void reverseSolution() {
+        List<Vertex> temp = new ArrayList<>();
+        for (int i = solution.size() - 1; i >= 0; i -= 1) {
+            temp.add(solution.get(i));
+        }
+        solution = temp;
     }
 }
