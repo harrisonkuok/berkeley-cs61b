@@ -17,8 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static bearmaps.proj2d.utils.Constants.SEMANTIC_STREET_GRAPH;
-import static bearmaps.proj2d.utils.Constants.ROUTE_LIST;
+import static bearmaps.proj2d.utils.Constants.*;
 
 /**
  * Handles requests from the web browser for map images. These images
@@ -84,11 +83,40 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
      */
     @Override
     public Map<String, Object> processRequest(Map<String, Double> requestParams, Response response) {
-        //System.out.println("yo, wanna know the parameters given by the web browser? They are:");
-        //System.out.println(requestParams);
-        Map<String, Object> results = new HashMap<>();
+        /*System.out.println("yo, wanna know the parameters given by the web browser? They are:");
+        System.out.println(requestParams);
         System.out.println("Since you haven't implemented RasterAPIHandler.processRequest, nothing is displayed in "
-                + "your browser.");
+                + "your browser.");*/
+        if (testNoCoverage(requestParams.get("ullon"), requestParams.get("lrlon"), requestParams.get("ullat"), requestParams.get("lrlat"))) {
+            return queryFail();
+        }
+
+        Map<String, Object> results = new HashMap<>();
+        int depth = depthFinder(requestParams.get("ullon"), requestParams.get("lrlon"), requestParams.get("w"));
+
+        int lonStart = imgLon(requestParams.get("ullon"), depth);
+        int lonEnd = imgLon(requestParams.get("lrlon"), depth);
+        int latStart = imgLat(requestParams.get("ullat"), depth);
+        int latEnd = imgLat(requestParams.get("lrlat"), depth);
+        double tileLat = (ROOT_ULLAT - ROOT_LRLAT) / Math.pow(2, depth);
+        double tileLon = (ROOT_LRLON - ROOT_ULLON) / Math.pow(2, depth);
+
+        String[][] renderGrid = new String[latEnd - latStart + 1][];
+        for (int i = 0; i + latStart < latEnd + 1; i += 1) {
+            renderGrid[i] = new String[Math.abs(lonEnd - lonStart) + 1];
+            for (int j = 0; j + lonStart < lonEnd + 1; j += 1) {
+                renderGrid[i][j] = imgName(depth, lonStart + j, latStart + i);
+            }
+        }
+
+        results.put("raster_ul_lon", ROOT_ULLON + tileLon * lonStart);
+        results.put("raster_ul_lat", ROOT_ULLAT - tileLat * latStart);
+        results.put("raster_lr_lon", ROOT_ULLON + tileLon * (lonEnd + 1));
+        results.put("raster_lr_lat", ROOT_ULLAT - tileLat * (latEnd + 1));
+        results.put("render_grid", renderGrid);
+        results.put("depth", depth);
+        results.put("query_success", true);
+        System.out.println(results);
         return results;
     }
 
@@ -212,5 +240,62 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
             }
         }
         return tileImg;
+    }
+
+    private int depthFinder(double lon1, double lon2, double width) {
+        double lonPixRatio = (lon2 - lon1) / width;
+        double rootLonDis = ROOT_LRLON - ROOT_ULLON;
+        double depth = Math.ceil(Math.log(rootLonDis / lonPixRatio / TILE_SIZE) / Math.log(2));
+        if (depth > 7) {
+            return 7;
+        } else if (depth < 0) {
+            return 0;
+        }
+        return (int) depth;
+    }
+
+    private int imgLon(double lon1, double depth) {
+        double tileLon = (ROOT_LRLON - ROOT_ULLON) / Math.pow(2, depth);
+        double lonDiff = lon1 - ROOT_ULLON;
+        int tileNum = (int) Math.floor(lonDiff / tileLon);
+        if (tileNum < 0) {
+            return 0;
+        } else if (tileNum > Math.pow(2, depth) - 1) {
+            return (int) Math.pow(2, depth) - 1;
+        }
+        return tileNum;
+    }
+
+    private int imgLat(double lat1, double depth)  {
+        double tileLat = (ROOT_ULLAT - ROOT_LRLAT) / Math.pow(2, depth);
+        double latDiff = ROOT_ULLAT - lat1;
+        int tileNum = (int) Math.floor(latDiff / tileLat);
+        if (tileNum < 0) {
+            return 0;
+        } else if (tileNum > Math.pow(2, depth) - 1) {
+            return (int) Math.pow(2, depth) - 1;
+        }
+        return tileNum;
+    }
+
+    private String imgName(int depth, int x, int y) {
+        return "d" + depth + "_x" + x + "_y" + y + ".png";
+    }
+
+    private boolean testNoCoverage(double lon1, double lon2, double lat1, double lat2) {
+        if (lon1 > ROOT_LRLON) {
+            return true;
+        } else if (lon2 < ROOT_ULLON) {
+            return true;
+        } else if (lat1 < ROOT_LRLAT) {
+            return true;
+        } else if (lat2 > ROOT_ULLAT) {
+            return true;
+        } else if (lat1 < lat2) {
+            return true;
+        } else if (lon1 > lon2) {
+            return true;
+        }
+        return false;
     }
 }
