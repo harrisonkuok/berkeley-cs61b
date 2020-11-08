@@ -1,11 +1,11 @@
 package bearmaps.proj2d;
 
+import bearmaps.proj2ab.Point;
+import bearmaps.proj2ab.WeirdPointSet;
 import bearmaps.proj2c.streetmap.StreetMapGraph;
 import bearmaps.proj2c.streetmap.Node;
 
-import java.util.List;
-import java.util.Map;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * An augmented graph that is more powerful that a standard StreetMapGraph.
@@ -31,7 +31,18 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
      * @return The id of the node in the graph closest to the target.
      */
     public long closest(double lon, double lat) {
-        return 0;
+        List<Node> nodes = getNodes();
+        HashMap<Point, Node> nodesMap = new HashMap<>();
+        List<Point> pointsList = new ArrayList<>();
+        for (Node node : nodes) {
+            if (!neighbors(node.id()).isEmpty()) {
+                nodesMap.put(new Point(node.lon(), node.lat()), node);
+                pointsList.add(new Point(node.lon(), node.lat()));
+            }
+        }
+        WeirdPointSet nodesPointSet = new WeirdPointSet(pointsList);
+        Point nearestPoint = nodesPointSet.nearest(lon, lat);
+        return nodesMap.get(nearestPoint).id();
     }
 
 
