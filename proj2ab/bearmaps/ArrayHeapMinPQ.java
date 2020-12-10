@@ -3,6 +3,7 @@ package bearmaps;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.TreeMap;
 
 public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
@@ -107,6 +108,11 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
             } else {
                 return ((PriorityNode) o).getItem().equals(getItem());
             }
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(item, priority);
         }
     }
 
